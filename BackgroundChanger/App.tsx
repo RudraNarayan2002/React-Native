@@ -1,117 +1,81 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, {useState} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [randomBackground, setRandomBackground] = useState('#ffffff');
+  const [randomBackground1, setRandomBackground1] = useState('#ffffff');
+  const [randomBackground2, setRandomBackground2] = useState('#ffffff');
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const generateRandomColor = () => {
+    const hexRange = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += hexRange[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  const generateColors = () => {
+    setRandomBackground(generateRandomColor());
+    setRandomBackground1(generateRandomColor());
+    setRandomBackground2(generateRandomColor());
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+    <>
+      <StatusBar backgroundColor={randomBackground} />
+      <View style={[styles.container, {backgroundColor: randomBackground}]}>
+        <View style={[styles.shapeView, {backgroundColor: randomBackground1}]}>
+          <Text style={styles.shapeText}>Box 1</Text>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+        <TouchableOpacity onPress={generateColors}>
+          <View style={styles.actionBtn}>
+            <Text style={styles.actionBtnTxt}>Press me</Text>
+          </View>
+        </TouchableOpacity>
+        <View style={[styles.shapeView, {backgroundColor: randomBackground2}]}>
+          <Text style={styles.shapeText}>Box 2</Text>
+        </View>
+      </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    paddingVertical: 20,
   },
-  sectionTitle: {
+  actionBtn: {
+    borderRadius: 12,
+    backgroundColor: 'black',
+    paddingHorizontal: 40,
+    paddingVertical: 10,
+  },
+  actionBtnTxt: {
     fontSize: 24,
-    fontWeight: '600',
+    textTransform: 'uppercase',
+    color: 'white',
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  shapeView: {
+    width: 100,
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10, // Added for better design
   },
-  highlight: {
-    fontWeight: '700',
+  shapeText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 
